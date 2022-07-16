@@ -25,7 +25,7 @@ class CsvImporter(Importer):
         else:
             data = self.getDataFromFile(data, filePath + fileName)
 
-        self.log("Retrieved Data. Row Count: " + str(len(data)))
+        self.log("Retrieved Data. Count: " + str(len(data)))
 
         return data
 
@@ -40,7 +40,8 @@ class CsvImporter(Importer):
             if not isFile:
                 break
                 
-            data = self.getDataFromFile(data, filePath)
+            fileData = self.getDataFromFile(data, filePath)
+            data.append(fileData)
         return data
 
     def getDataFromFile(self, data, filePath):

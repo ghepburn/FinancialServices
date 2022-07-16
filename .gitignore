@@ -1,3 +1,4 @@
-data
+data/*
 services/api/site.db
 venv
+services/dataImporter/logs/*

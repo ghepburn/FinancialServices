@@ -4,7 +4,6 @@ class Transformer:
         self.logger=logger
 
     def transform(self, data):
-        self.log("Transforming")
         self.log("Transformed")
         return data
 

@@ -4,7 +4,6 @@ class Validator:
         self.logger = logger
 
     def validate(self, data):
-        self.log("Validating")
         self.log("Validated")
         return data
 

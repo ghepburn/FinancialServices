@@ -4,7 +4,6 @@ class Loader:
         self.logger=logger
 
     def load(self, data):
-        self.log("Loading")
         self.log("Loaded")
         return data
 

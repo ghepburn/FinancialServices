@@ -18,6 +18,8 @@ class Importer:
         self.log("Initialized")
 
     def run(self):
+        self.logger.setOutputLocation(self.configs.get("logOutputPath"))
+
         data = self.getData()
 
         synchronizer = self.synchronizer(self.logger, self.iterator, self.validator, self.transformer, self.loader)
@@ -26,7 +28,7 @@ class Importer:
 
         self.log("Import Completed. Resulting Row Count: " + str(len(results)))
 
-        print(results)
+        print(results[-5:-1])
 
         return results
 
