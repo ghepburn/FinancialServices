@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+import json
 
 class Logger:
     method = print
@@ -8,7 +9,12 @@ class Logger:
     location = ""
 
     def log(self, location, msg):
-        output = self.__class__.__name__.upper() + ": " + location + " -> " + msg
+
+        if type(msg) == str:
+            output = self.__class__.__name__.upper() + ": " + location + " -> " + msg
+        else:
+            output = json.dumps(msg)
+
         method = self.getMethod()
         method(output)
 
@@ -25,7 +31,7 @@ class Logger:
 
             self.location = path + self.directory + self.fileName
             self.method = self.printToFile
-            print(self.__class__.__name__.upper() + "-> " + "output location set to " + self.location)
+            print(self.__class__.__name__.upper() + "-> " + "logging to " + self.location)
 
     def printToFile(self, output):
         file = open(self.location, "a")

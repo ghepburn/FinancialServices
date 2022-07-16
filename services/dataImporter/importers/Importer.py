@@ -15,10 +15,11 @@ class Importer:
     
     def __init__(self, importConfigs):
         self.configs = importConfigs
+        self.logger.setOutputLocation(self.configs.get("logOutputPath"))
+        
         self.log("Initialized")
 
     def run(self):
-        self.logger.setOutputLocation(self.configs.get("logOutputPath"))
 
         data = self.getData()
 
@@ -28,7 +29,7 @@ class Importer:
 
         self.log("Import Completed. Resulting Row Count: " + str(len(results)))
 
-        print(results[-5:-1])
+        self.log(results[-5:-1])
 
         return results
 
