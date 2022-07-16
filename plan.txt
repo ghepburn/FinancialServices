@@ -1,0 +1,43 @@
+
+
+USER EXPERIENCE
+1. Easily see where money goes
+    - Categories
+    - Sources ex: credit card, debit, e-transfer etc
+    - Abillity to change dates and see over different time periods
+2. Easily see money coming in
+3. Current trojectory 
+4. Mortgage calculations
+    - When it will be paid off
+    - Current equity in home
+    - How additional payments will effect amoritization
+5. Notifications 
+    - when monthly expenses are above average?
+
+
+ToDo
+
+1. Setup BE API
+    a) Setup SQLLite DB
+    b) Setup Flask
+    c) build BE API
+        a) Serve data to FE
+            - Credit transactions
+            - Debit transactions
+            - mortgage calculations
+            - Tratectory data
+        b) Import CSV data into DB
+            - Method:
+                - via FE API?
+                    - Get data
+                    - Delete data
+                    - load data
+                - via manual call to BE API
+                - via cron automation?
+            - "ensure no duplications" logic included (So same transactions can be imported multiple times)
+2. Setup FE Display
+    a) Setup React
+    b) Connect it to BE
+    c) Create a display for the data
+3. Setup Application On Rasberry Pi
+4. Access Application On Cell Phone
