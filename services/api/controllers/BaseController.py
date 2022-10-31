@@ -13,6 +13,12 @@ class BaseController:
         data = self.model.query.filter_by(id=id)
         return self.response(data)
 
+    def create(self, data):
+        return self.response(data)
+
+    def delete(self, id):
+        return False
+
     def response(self, data):
 
         response = {}

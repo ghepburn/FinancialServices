@@ -17,7 +17,6 @@ transactionCategory4 = TransactionCategory(id=4, name="Income")
 
 transaction1 = Transaction(id=1, transaction_type_id=1, transaction_category_id=1, date=dt.date(2022, 1, 1), source="BMOCreditCard", description="Restaurant Refund")
 transaction2 = Transaction(id=2, transaction_type_id=1, transaction_category_id=4, date=dt.date(2022, 1, 1), source="BMOCreditCard", description="Job Pay")
-
 transaction3 = Transaction(id=3, transaction_type_id=2, transaction_category_id=1, date=dt.date(2022, 1, 1), source="BMOCreditCard", description="KFC Baby")
 transaction4 = Transaction(id=4, transaction_type_id=2, transaction_category_id=2, date=dt.date(2022, 1, 1), source="BMOCreditCard", description="NOFrills")
 
