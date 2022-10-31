@@ -2,6 +2,7 @@ class Validator:
     
     def __init__(self, logger=None):
         self.logger = logger
+        self.dataMap = []
 
     def validate(self, data):
         self.log("Validated")

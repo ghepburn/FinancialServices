@@ -23,9 +23,3 @@ class Transaction(db.Model):
 
         return dic
 
-    @classmethod
-    def getColumnsMap(cls):
-        columns = cls.__table__.cols
-        print(columns)
-        return columns
-

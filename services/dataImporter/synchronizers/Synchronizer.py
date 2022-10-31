@@ -1,3 +1,4 @@
+from services.dataImporter.maps.TransactionMap import TransactionMap
 
 class Synchronizer:
     
@@ -15,8 +16,16 @@ class Synchronizer:
 
         self.iterator.setData(data)
 
+        count = 0
         while self.iterator.hasNext():
             batch = self.iterator.getNext()
+            count += 1
+
+            if count == 1:
+                headers = self.getHeaders(batch)
+                dataMap = TransactionMap(headers)
+                self.setDataMap(dataMap)
+                continue
 
             for i in range(len(batch)):
                 item = batch[i]
@@ -24,6 +33,7 @@ class Synchronizer:
                 try:
                     valdiatedBatch = self.validator.validate(item)
                 except Exception as error:
+                    self.log("Validation Failed.")
                     self.log("Error: Batch ->")
                     self.log(item)
                     self.log(error)
@@ -31,13 +41,18 @@ class Synchronizer:
                 try:
                     transformedBatch = self.transformer.transform(valdiatedBatch)
                 except Exception as error:
+                    self.log("Transformation failed.")
+                    # continue
                     self.log("Error: Validated Batch ->")
                     self.log(valdiatedBatch)
+                    self.log("Error transforming batch.")
                     self.log(error)
 
                 try:
                     loadedBatch = self.loader.load(transformedBatch)
                 except Exception as error:
+                    self.log('Loading failed.')
+                    continue
                     self.log("Error: Transformed Batch ->")
                     self.log(transformedBatch)
                     self.log(error)
@@ -50,4 +65,16 @@ class Synchronizer:
 
     def log(self, msg):
         self.logger.log(self.__class__.__name__, msg)
+
+    def setDataMap(self, dataMap):
+        self.validator.dataMap = dataMap
+        self.transformer.dataMap = dataMap
+
+    def getHeaders(self, batch):
+        numOfItemsInBatch = self.iterator.batchSize
+
+        if numOfItemsInBatch == 1:
+            return batch
+        else:
+            return batch[0]
 
