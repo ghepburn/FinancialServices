@@ -9,6 +9,10 @@ class TransactionSourceMap(db.Model):
     transaction_amount_column = db.Column(db.Integer, default=0)
     transaction_type_column = db.Column(db.Integer, default=0)
     transaction_description_column = db.Column(db.Integer, default=0)
+    ref_num = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        return self.ref_num
 
     def toDict(self):
         dic = {}
@@ -17,4 +21,3 @@ class TransactionSourceMap(db.Model):
             dic[col.name] = getattr(self, col.name)
 
         return dic
-

@@ -1,10 +1,12 @@
 from flask import Flask, request
+import json
 
 from services.api import app
 from services.api.controllers.TransactionController import TransactionController
 from services.api.controllers.TransactionTypeController import TransactionTypeController
 from services.api.controllers.TransactionCategoryController import TransactionCategoryController
 from services.api.controllers.TransactionSourceController import TransactionSourceController
+from services.api.controllers.TransactionSourceMapController import TransactionSourceMapController
 
 @app.route("/", methods = ["GET"])
 def home():
@@ -20,7 +22,7 @@ def getTransactionImportLogs():
     if request.method == "GET":
         return "Getting transaction import logs"
     else:
-        return "Creating transaction import logs: " + request.data
+        return "Creating transaction import logs: " + request.json
 
 @app.route("/transactions/sources", methods = ["GET", "POST"])
 def transactionSources():
@@ -28,27 +30,27 @@ def transactionSources():
         maps = TransactionSourceController().getAll()
         return maps
     elif request.method == "POST":
-        map = TransactionSourceController().create(request.data)
+        map = TransactionSourceController().create(request.json)
         return map
 
 @app.route("/transactions/sources/<transactionSourceId>", methods = ["GET", "PUT", "DELETE"])
-def getTransactionImportMaps(transactionSourceId):
+def transactionSource(transactionSourceId):
     if request.method == "GET":
         maps = TransactionSourceController().getById(transactionSourceId)
         return maps
-    elif request.method == "POST":
-        map = TransactionSourceController().create(transactionSourceId, request.data)
+    elif request.method == "PUT":
+        map = TransactionSourceController().update(transactionSourceId, request.json)
         return map
     elif request.method == "DELETE":
-        map = TransactionSourceController().delete(transactionSourceId, request.data)
+        map = TransactionSourceController().delete(transactionSourceId, request.json)
 
 @app.route("/transactions/sources/<transactionSourceId>/map", methods = ["GET", "POST", "DELETE"])
-def getTransactionImportMaps(transactionSourceId):
+def transactionSourceMap(transactionSourceId):
     if request.method == "GET":
         map = TransactionSourceMapController(transactionSourceId).getAll()
         return map
     elif request.method == "POST":
-        map = TransactionSourceMapController(transactionSourceId).create(request.data)
+        map = TransactionSourceMapController(transactionSourceId).create(request.json)
         return map
     elif request.method == "DELETE":
         map = TransactionSourceMapController(transactionSourceId).delete()
@@ -72,7 +74,7 @@ def transactionTypes():
         transactionTypes = TransactionTypeController().getTransactionTypes()
         return transactionTypes
     elif request.method == "POST":
-        transactionType = TransactionTypeController().createTransactionType(request.data)
+        transactionType = TransactionTypeController().createTransactionType(request.json)
         return transactionType
 
 @app.route("/api/transactions/types/<transactionTypeId>", methods = ["GET", "PUT", "DELETE"])
@@ -93,7 +95,7 @@ def transactionCategories():
         transactionCategories = TransactionCategoryController().getTransactionCategories()
         return transactionCategories
     elif request.method == "POST":
-        transactionCategory = TransactionCategoryController().createTransactionCategory(request.data)
+        transactionCategory = TransactionCategoryController().createTransactionCategory(request.json)
         return transactionCategory
 
 @app.route("/api/transactions/categories/<transactionCategoryId>", methods = ["GET", "PUT", "DELETE"])
@@ -102,7 +104,7 @@ def transactionCategory(transactionCategoryId):
         transactionCategories = TransactionCategoryController().getTransactionCategory(transactionCategoryId)
         return transactionCategories
     elif request.method == "PUT":
-        transactionCategory = TransactionCategoryController().updateTransactionCategory(transactionCategoryId, request.data)
+        transactionCategory = TransactionCategoryController().updateTransactionCategory(transactionCategoryId, request.json)
         return transactionCategory
     elif request.method == "DELETE":
         transactionCategory = TransactionCategoryController().deleteTransactionCategory(transactionCategoryId)

@@ -4,7 +4,7 @@ class ImportLog(db.Model):
     __tablename__ = "import_logs"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     source_id = db.Column(db.Integer, db.ForeignKey('transaction_sources.id'), nullable=True)
-    message = db.Column(db.String(1000), nullable=False)
+    message = db.Column(db.Text(), nullable=False)
 
     def toDict(self):
         dic = {}
@@ -13,4 +13,8 @@ class ImportLog(db.Model):
             dic[col.name] = getattr(self, col.name)
 
         return dic
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
