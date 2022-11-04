@@ -1,20 +1,11 @@
 from services.api import db
+from .BaseModelMixin import BaseModelMixin
 
-class ImportLog(db.Model):
+class ImportLog(BaseModelMixin, db.Model):
     __tablename__ = "import_logs"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     source_id = db.Column(db.Integer, db.ForeignKey('transaction_sources.id'), nullable=True)
     message = db.Column(db.Text(), nullable=False)
 
-    def toDict(self):
-        dic = {}
-
-        for col in self.__table__.columns:
-            dic[col.name] = getattr(self, col.name)
-
-        return dic
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
+    def __repr__(self):
+        return __class__ + " - " + self.id

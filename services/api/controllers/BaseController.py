@@ -1,4 +1,5 @@
 from services.api import db
+from flask import Response
 
 class BaseController:
 
@@ -7,7 +8,13 @@ class BaseController:
 
     def getAll(self):
         data = self.model.query.all()
-        return self.response(data)
+
+        response = {}
+        for item in data:
+            dic = item.toDict()
+            response[dic["id"]] = dic
+
+        return response
     
     def getById(self, id):
         data = self.model.query.filter_by(id=id)
@@ -15,8 +22,14 @@ class BaseController:
         noModelFound = data.count() == 0
         if noModelFound:
             data = self.model.query.filter_by(ref_num=id)
+
+        noModelFound = data.count() == 0
+        if noModelFound:
+            return Response("No model with id: " + id, 400)
         
-        return self.response(data)
+        model = data[0]
+        
+        return model.toDict()
 
     def create(self, data):
         if "ref_num" not in data.keys():
@@ -26,15 +39,14 @@ class BaseController:
         db.session.add(model)
         db.session.commit()
 
-        return self.response(model)
+        return model.toDict()
 
     def update(self, id, data):
         models = self.model.query.filter_by(id=id)
 
-        noExistingModel = models.count() == 0
-        if noExistingModel:
-            errorMessage = "Id " + id + " does not exist."
-            return self.errorResponse(errorMessage, 400)
+        noModelFound = models.count() == 0
+        if noModelFound:
+            return Response("No model with id: " + id, 400)
 
         model = models.first()
 
@@ -46,30 +58,23 @@ class BaseController:
         db.session.add(model)
         db.session.commit()
 
-        return self.response(model)
+        return model.toDict()
 
     def delete(self, id):
-        return False
+        models = self.model.query.filter_by(id=id) 
+
+        noModelFound = models.count() == 0
+        if noModelFound:
+            print("NO MODEL FOUND")
+            return Response("No model with id: " + id, 400)
+
+        model = models.first()
+
+        db.session.delete(model)
+        db.session.commit()
+
+        return {}
 
     def setRefnum(self, data):
         data["ref_num"] = data["name"]
         return data
-
-    def response(self, data):
-        response = {}
-
-        if type(data) == "object":
-            response = data.toDict()
-        else:
-            for item in data:
-                dic = item.toDict()
-                response[dic["id"]] = dic
-
-        return response
-
-    def errorResponse(self, message, errorCode=500):
-        response = {}
-        response["errorCode"] = errorCode
-        response["message"] = message
-
-        return response

@@ -1,8 +1,9 @@
 from services.api import db
 
 import datetime as dt
+from .BaseModelMixin import BaseModelMixin
 
-class Transaction(db.Model):
+class Transaction(BaseModelMixin, db.Model):
     __tablename__ = "transactions"
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -15,16 +16,3 @@ class Transaction(db.Model):
     date_added = db.Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     date_last_modified = db.Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     ref_num = db.Column(db.String, nullable=False)
-
-    def __repr__(self):
-        return self.ref_num
-
-    def toDict(self):
-        dic = {}
-
-        for col in self.__table__.columns:
-            dic[col.name] = getattr(self, col.name)
-
-        return dic
-
-
