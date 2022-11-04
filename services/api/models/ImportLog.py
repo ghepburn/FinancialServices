@@ -1,7 +1,7 @@
 from services.api import db
-from .BaseModelMixin import BaseModelMixin
+from .BaseModel import BaseModel
 
-class ImportLog(BaseModelMixin, db.Model):
+class ImportLog(BaseModel, db.Model):
     __tablename__ = "import_logs"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     source_id = db.Column(db.Integer, db.ForeignKey('transaction_sources.id'), nullable=True)

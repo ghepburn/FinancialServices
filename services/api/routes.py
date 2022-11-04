@@ -67,8 +67,50 @@ def transactions():
         transactions = TransactionController().getAll()
         return transactions
     elif request.method == "POST":
-        transaction = TransactionController.create(request.json)
+        transaction = TransactionController().create(request.json)
         return transaction
+
+@app.route("/transactions/types", methods = ["GET", "POST"])
+def transactionTypes():
+    if request.method == 'GET':
+        transactionTypes = TransactionTypeController().getAll()
+        return transactionTypes
+    elif request.method == "POST":
+        transactionType = TransactionTypeController().create(request.json)
+        return transactionType
+
+@app.route("/transactions/types/<transactionTypeId>", methods = ["GET", "PUT", "DELETE"])
+def transactionType(transactionTypeId):
+    if request.method == "GET":
+        transactionType = TransactionTypeController().getById(transactionTypeId)
+        return transactionType
+    elif request.method == "PUT":
+        transactionType = TransactionTypeController().update(transactionTypeId, request.data)
+        return transactionType
+    elif request.method == "DELETE":
+        transactionType = TransactionTypeController().delete(transactionTypeId)
+        return transactionType
+
+@app.route("/transactions/categories", methods = ["GET", "POST"])
+def transactionCategories():
+    if request.method == 'GET':
+        transactionCategories = TransactionCategoryController().getAll()
+        return transactionCategories
+    elif request.method == "POST":
+        transactionCategory = TransactionCategoryController().create(request.json)
+        return transactionCategory
+
+@app.route("/transactions/categories/<transactionCategoryId>", methods = ["GET", "PUT", "DELETE"])
+def transactionCategory(transactionCategoryId):
+    if request.method == "GET":
+        transactionCategories = TransactionCategoryController().getById(transactionCategoryId)
+        return transactionCategories
+    elif request.method == "PUT":
+        transactionCategory = TransactionCategoryController().update(transactionCategoryId, request.json)
+        return transactionCategory
+    elif request.method == "DELETE":
+        transactionCategory = TransactionCategoryController().delete(transactionCategoryId)
+        return transactionCategory
 
 @app.route("/transactions/<int:transactionId>", methods=["GET", "PUT", "DELETE"])
 def transaction(transactionId):
@@ -81,45 +123,3 @@ def transaction(transactionId):
     elif request.method == "DELETE":
         transaction = TransactionController.delete(transactionId)
         return transaction
-
-@app.route("/api/transactions/types", methods = ["GET", "POST"])
-def transactionTypes():
-    if request.method == 'GET':
-        transactionTypes = TransactionTypeController().getAll()
-        return transactionTypes
-    elif request.method == "POST":
-        transactionType = TransactionTypeController().create(request.json)
-        return transactionType
-
-@app.route("/api/transactions/types/<transactionTypeId>", methods = ["GET", "PUT", "DELETE"])
-def transactionType(transactionTypeId):
-    if request.method == "GET":
-        transactionType = TransactionTypeController().getById(transactionTypeId)
-        return transactionType
-    elif request.method == "PUT":
-        transactionType = TransactionTypeController().update(transactionTypeId, request.data)
-        return transactionType
-    elif request.method == "DELETE":
-        transactionType = TransactionTypeController().delete(transactionTypeId)
-        return transactionType
-
-@app.route("/api/transactions/categories", methods = ["GET", "POST"])
-def transactionCategories():
-    if request.method == 'GET':
-        transactionCategories = TransactionCategoryController().getAll()
-        return transactionCategories
-    elif request.method == "POST":
-        transactionCategory = TransactionCategoryController().create(request.json)
-        return transactionCategory
-
-@app.route("/api/transactions/categories/<transactionCategoryId>", methods = ["GET", "PUT", "DELETE"])
-def transactionCategory(transactionCategoryId):
-    if request.method == "GET":
-        transactionCategories = TransactionCategoryController().getById(transactionCategoryId)
-        return transactionCategories
-    elif request.method == "PUT":
-        transactionCategory = TransactionCategoryController().update(transactionCategoryId, request.json)
-        return transactionCategory
-    elif request.method == "DELETE":
-        transactionCategory = TransactionCategoryController().delete(transactionCategoryId)
-        return transactionCategory

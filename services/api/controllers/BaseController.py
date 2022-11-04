@@ -1,11 +1,14 @@
 from services.api import db
 from flask import Response
 
+from .decorators.CatchErrors import CatchErrors
+
 class BaseController:
 
     def __init__(self):
         pass
-
+    
+    @CatchErrors
     def getAll(self):
         data = self.model.query.all()
 
@@ -16,6 +19,7 @@ class BaseController:
 
         return response
     
+    @CatchErrors
     def getById(self, id):
         data = self.model.query.filter_by(id=id)
 
@@ -31,16 +35,16 @@ class BaseController:
         
         return model.toDict()
 
+    @CatchErrors
     def create(self, data):
-        if "ref_num" not in data.keys():
-            data = self.setRefnum(data)
-
         model = self.model(**data)
+
         db.session.add(model)
         db.session.commit()
 
         return model.toDict()
 
+    @CatchErrors
     def update(self, id, data):
         models = self.model.query.filter_by(id=id)
 
@@ -60,12 +64,12 @@ class BaseController:
 
         return model.toDict()
 
+    @CatchErrors
     def delete(self, id):
         models = self.model.query.filter_by(id=id) 
 
         noModelFound = models.count() == 0
         if noModelFound:
-            print("NO MODEL FOUND")
             return Response("No model with id: " + id, 400)
 
         model = models.first()
@@ -75,6 +79,7 @@ class BaseController:
 
         return {}
 
+    @CatchErrors
     def setRefnum(self, data):
         data["ref_num"] = data["name"]
         return data
