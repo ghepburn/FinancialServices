@@ -67,7 +67,11 @@ def transactions():
         transactions = TransactionController().getAll()
         return transactions
     elif request.method == "POST":
-        transaction = TransactionController().create(request.json)
+        isBulkCreate = type(request.json) == list
+        if isBulkCreate:
+            transaction = TransactionController().bulkCreate(request.json)
+        else:    
+            transaction = TransactionController().create(request.json)
         return transaction
 
 @app.route("/transactions/types", methods = ["GET", "POST"])

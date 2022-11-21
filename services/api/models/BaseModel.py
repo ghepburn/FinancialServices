@@ -10,7 +10,7 @@ class BaseModel(object):
 
         kwargs = self.cleanData(kwargs)
 
-        super().__init__(**kwargs)   
+        super().__init__(**kwargs)
         self.setReferenceNumber() 
 
     def __repr__(self):
@@ -30,10 +30,19 @@ class BaseModel(object):
         self.ref_num = self.name
 
     @CatchModelErrors
-    def cleanData(self, data: dict):
-        for key in data.keys():
+    def getForeignKeys(self):
+        foreignKeys = []
+        for col in self.__table__.columns:
+            for key in col.foreign_keys:
+                print(key)
+
+    @CatchModelErrors
+    def cleanData(self, model: dict):
+        for key in model.keys():
 
             if "date" in key:
-                data[key] = self.transformer.transformDate(data[key])
+                model[key] = self.transformer.transformDate(model[key])
 
-        return data
+            self.getForeignKeys()
+
+        return model
